@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SettlementCultureChanger", "SettlementCultureChanger\SettlementCultureChanger.csproj", "{673DF3E5-CF96-474A-82DB-C474695D7C8F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{673DF3E5-CF96-474A-82DB-C474695D7C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{673DF3E5-CF96-474A-82DB-C474695D7C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{673DF3E5-CF96-474A-82DB-C474695D7C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{673DF3E5-CF96-474A-82DB-C474695D7C8F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E314CAF1-3F12-4A02-9A0E-0DF5BF7A5442}
+	EndGlobalSection
+EndGlobal
