@@ -30,7 +30,7 @@ namespace SettlementCultureChanger
             {
                 initialCultureList.Add(settlement, settlement.Culture);
                 if (!SubModule.isGradual)
-                    ChangeCulture(settlement);
+                    ChangeCulture(settlement,true);
             }
             SetInitialCultureList(initialCultureList);
             if (SubModule.isGradual)
@@ -41,6 +41,11 @@ namespace SettlementCultureChanger
                     {
                         AddSettlementCounter(settlement);
                     }
+                    else if (settlement.Culture != (settlement.OwnerClan.Kingdom?.Culture ?? settlement.OwnerClan.Culture) &&
+                             settlementTickCounters.ContainsKey(settlement) && IsSettlementReady(settlement))
+                    {
+                        ChangeCulture(settlement,false);
+                    }
                 }
             }
         }
@@ -50,7 +55,7 @@ namespace SettlementCultureChanger
             if (SubModule.isGradual)
                 AddSettlementCounter(settlement);
             else
-                ChangeCulture(settlement);
+                ChangeCulture(settlement,true);
         }
 
         private void OnSettlementOwnerChanged(Settlement settlement, bool arg2, Hero arg3, Hero arg4, Hero arg5, ChangeOwnerOfSettlementAction.ChangeOwnerOfSettlementDetail detail)
@@ -60,7 +65,7 @@ namespace SettlementCultureChanger
                 if (SubModule.isGradual)
                     AddSettlementCounter(settlement);
                 else
-                    ChangeCulture(settlement);
+                    ChangeCulture(settlement,true);
             }
             else if (detail == ChangeOwnerOfSettlementAction.ChangeOwnerOfSettlementDetail.BySiege)
             {
@@ -74,28 +79,33 @@ namespace SettlementCultureChanger
             OnKingdomChange(clan);
         }
         public static void SetInitialCultureList(Dictionary<Settlement, CultureObject> dict) => initialCultureDictionary = dict;
-        public static void ChangeCulture(Settlement settlement)
+        public static void ChangeCulture(Settlement settlement,bool deleteTroops)
         {
             if (!(settlement.IsVillage || settlement.IsCastle || settlement.IsTown)) { return; }
 
             if (settlement.Culture != (settlement.OwnerClan.Kingdom?.Culture ?? settlement.OwnerClan.Culture))
             {
                 settlement.Culture = settlement.OwnerClan.Kingdom?.Culture ?? settlement.OwnerClan.Culture;
-                DeleteNotableTroops(settlement);
+                if(deleteTroops)
+                    DeleteNotableTroops(settlement);
                 foreach (Village boundVillage in settlement.BoundVillages)
                 {
-                    ChangeCulture(boundVillage.Settlement);
+                    if(deleteTroops)
+                        ChangeCulture(boundVillage.Settlement,true);
+                    else
+                        ChangeCulture(boundVillage.Settlement,false);
                 }
             }
         }
         public void OnKingdomChange(Clan clan)
         {
+            if (clan.Culture == clan.Kingdom?.Culture) return;
             foreach (Settlement settlement in clan.Settlements.Where(s => s.IsTown || s.IsCastle || s.IsVillage))
             {
                 if (SubModule.isGradual)
                     AddSettlementCounter(settlement);
                 else
-                    ChangeCulture(settlement);
+                    ChangeCulture(settlement,true);
             }
         }
         public void RevertCulture(Settlement settlement)
@@ -135,8 +145,7 @@ namespace SettlementCultureChanger
                 settlementTickCounters[settlement] += 1;
                 if (IsSettlementReady(settlement))
                 {
-                    ChangeCulture(settlement);
-                    settlementTickCounters.Remove(settlement);
+                    ChangeCulture(settlement,true);
                 }
             }
         }

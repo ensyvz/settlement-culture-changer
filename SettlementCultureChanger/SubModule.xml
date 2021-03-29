@@ -1,0 +1,25 @@
+﻿<Module>
+	<Name value="Settlement Culture Changer"/>
+	<Id value="SettlementCultureChanger"/>
+	<Version value="v1.0.4"/>
+	<SingleplayerModule value="true"/>
+	<MultiplayerModule value="false"/>
+	<DependedModules>
+		<DependedModule Id="Native" DependentVersion="e1.5.8"/>
+		<DependedModule Id="SandBoxCore" DependentVersion="e1.5.8"/>
+		<DependedModule Id="Sandbox" DependentVersion="e1.5.8"/>
+		<DependedModule Id="StoryMode" DependentVersion="e1.5.8"/>
+	</DependedModules>
+	<SubModules>
+		<SubModule>
+			<Name value="SettlementCultureChanger"/>
+			<DLLName value="SettlementCultureChanger.dll"/>
+			<SubModuleClassType value="SettlementCultureChanger.SubModule"/>
+			<Tags>
+				<Tag key="DedicatedServerType" value="none" />
+				<Tag key="IsNoRenderModeElement" value="false" />
+			</Tags>
+		</SubModule>
+	</SubModules>
+	<Xmls/>
+</Module>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -28,8 +29,16 @@ namespace SettlementCultureChanger
         protected override void OnGameStart(Game game,IGameStarter gameStarter)
         {
             base.OnGameStart(game, gameStarter);
-            CampaignGameStarter campaignGameStarter = (CampaignGameStarter)gameStarter;
-            campaignGameStarter.AddBehavior(new ChangeSettlementCulture());
-        }
+            try
+            {
+                CampaignGameStarter campaignGameStarter = (CampaignGameStarter)gameStarter;
+                campaignGameStarter.AddBehavior(new ChangeSettlementCulture());
+            }
+            catch (System.InvalidCastException e)
+            {
+                
+            }
+            
+        } 
     }
 }

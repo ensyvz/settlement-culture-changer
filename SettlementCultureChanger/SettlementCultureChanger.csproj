@@ -90,6 +90,10 @@
     <Compile Include="SubModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="SubModule.xml" />
+    <None Include="Settings.cfg" />
+  </ItemGroup>
   <!-- Post-Build -->
   <PropertyGroup>
     <PostBuildEvent>
