@@ -14,7 +14,7 @@ namespace SettlementCultureChanger
         public override void RegisterEvents()
         {
             if (SubModule.isGradual)
-                CampaignEvents.WeeklyTickSettlementEvent.AddNonSerializedListener((object)this, new Action<Settlement>(this.OnSettlementWeeklyTick));
+                CampaignEvents.WeeklyTickEvent.AddNonSerializedListener((object)this, new Action(this.OnSettlementWeeklyTick));
            
             CampaignEvents.OnSiegeAftermathAppliedEvent.AddNonSerializedListener((object)this,new Action<MobileParty, Settlement, SiegeAftermathCampaignBehavior.SiegeAftermath, Clan, Dictionary<MobileParty, float>>(this.OnSiegeAftermathApplied));
             CampaignEvents.OnSettlementOwnerChangedEvent.AddNonSerializedListener((object)this, new Action<Settlement, bool, Hero, Hero, Hero, ChangeOwnerOfSettlementAction.ChangeOwnerOfSettlementDetail>(this.OnSettlementOwnerChanged));
@@ -138,16 +138,21 @@ namespace SettlementCultureChanger
             if(SubModule.isGradual)
                 dataStore.SyncData("SettlementCultureChanger", ref settlementTickCounters);
         }
-        public void OnSettlementWeeklyTick(Settlement settlement)
+        public void OnSettlementWeeklyTick()
         {
-            if (settlementTickCounters.ContainsKey(settlement))
+            List<Settlement> settlements = Campaign.Current.Settlements.Where(s => settlementTickCounters.ContainsKey(s)).ToList();
+            settlements.ForEach(settlement =>
             {
-                settlementTickCounters[settlement] += 1;
-                if (IsSettlementReady(settlement))
+                if (settlementTickCounters.ContainsKey(settlement))
                 {
-                    ChangeCulture(settlement,true);
+                    settlementTickCounters[settlement] += 1;
+                    if (IsSettlementReady(settlement))
+                    {
+                        ChangeCulture(settlement, true);
+                    }
                 }
-            }
+            });
+            
         }
         public bool IsSettlementReady(Settlement settlement) => settlementTickCounters[settlement] == SubModule.weeksToPassForChange;
         public void AddSettlementCounter(Settlement settlement)
