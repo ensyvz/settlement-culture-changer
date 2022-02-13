@@ -86,6 +86,10 @@ namespace SettlementCultureChanger
             if (settlement.Culture != (settlement.OwnerClan.Kingdom?.Culture ?? settlement.OwnerClan.Culture))
             {
                 settlement.Culture = settlement.OwnerClan.Kingdom?.Culture ?? settlement.OwnerClan.Culture;
+                foreach (Hero notable in settlement.Notables)
+                {
+                    notable.Culture = settlement.OwnerClan.Kingdom?.Culture ?? settlement.OwnerClan.Culture;
+                }
                 if(deleteTroops)
                     DeleteNotableTroops(settlement);
                 foreach (Village boundVillage in settlement.BoundVillages)
