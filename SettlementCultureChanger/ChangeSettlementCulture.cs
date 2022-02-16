@@ -9,7 +9,7 @@ namespace SettlementCultureChanger
 {
     public class ChangeSettlementCulture : CampaignBehaviorBase
     {
-        static Dictionary<Settlement, CultureObject> initialCultureDictionary;
+        static Dictionary<Settlement, CultureObject> initialCultureDictionary = new Dictionary<Settlement, CultureObject>();
         Dictionary<Settlement, int> settlementTickCounters = new Dictionary<Settlement, int>();
         public override void RegisterEvents()
         {
@@ -28,11 +28,10 @@ namespace SettlementCultureChanger
             Dictionary<Settlement, CultureObject> initialCultureList = new Dictionary<Settlement, CultureObject>();
             foreach (Settlement settlement in Campaign.Current.Settlements.Where(s => s.IsTown || s.IsCastle || s.IsVillage))
             {
-                initialCultureList.Add(settlement, settlement.Culture);
+                AddToInitialCultureList(settlement, settlement.Culture);
                 if (!SubModule.isGradual)
                     ChangeCulture(settlement,true);
             }
-            SetInitialCultureList(initialCultureList);
             if (SubModule.isGradual)
             {
                 foreach (Settlement settlement in Campaign.Current.Settlements.Where(s => s.IsTown || s.IsCastle || s.IsVillage))
@@ -79,6 +78,7 @@ namespace SettlementCultureChanger
             OnKingdomChange(clan);
         }
         public static void SetInitialCultureList(Dictionary<Settlement, CultureObject> dict) => initialCultureDictionary = dict;
+        public static void AddToInitialCultureList(Settlement settlement, CultureObject culture) => initialCultureDictionary.Add(settlement, culture);
         public static void ChangeCulture(Settlement settlement,bool deleteTroops)
         {
             if (!(settlement.IsVillage || settlement.IsCastle || settlement.IsTown)) { return; }
@@ -105,6 +105,20 @@ namespace SettlementCultureChanger
                 foreach (Hero notable in settlement.Notables)
                 {
                     notable.Culture = settlement.OwnerClan.Kingdom?.Culture ?? settlement.OwnerClan.Culture;
+                }
+            }
+            else
+            {
+                foreach (Hero notable in settlement.Notables)
+                {
+                    if (settlement.IsVillage)
+                    {
+                        notable.Culture = initialCultureDictionary[settlement.Village.Bound];
+                    }
+                    else
+                    {
+                        notable.Culture = initialCultureDictionary[settlement];
+                    }
                 }
             }
         }
