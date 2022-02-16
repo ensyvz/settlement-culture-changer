@@ -14,16 +14,18 @@ namespace SettlementCultureChanger
         private Dictionary<string, string> settings = new Dictionary<string, string>();
         public static bool isGradual;
         public static int weeksToPassForChange;
+        public static bool lightMode;
         protected override void OnSubModuleLoad()
         {
             string[] strArray = File.ReadAllText(System.IO.Path.GetFullPath(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..\\..\\")) + "/Settings.cfg").Split('\n');
             for (int index = 0; index < strArray.Length; ++index)
             {
-                if (!strArray[index].StartsWith("//"))
+                if (!strArray[index].StartsWith("//") && strArray[index].Contains("="))
                     this.settings.Add(strArray[index].Split('=')[0], strArray[index].Split('=')[1]);
             }
             isGradual = bool.Parse(this.settings["Gradual"]);
             weeksToPassForChange = int.Parse(this.settings["Weeks"]);
+            lightMode = bool.Parse(this.settings["LightMode"]);
             if (weeksToPassForChange < 0) weeksToPassForChange = 4;
         }
         protected override void OnGameStart(Game game,IGameStarter gameStarter)

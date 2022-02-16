@@ -1,14 +1,14 @@
 ﻿<Module>
 	<Name value="Settlement Culture Changer"/>
 	<Id value="SettlementCultureChanger"/>
-	<Version value="v1.1.0"/>
+	<Version value="v1.1.1"/>
 	<SingleplayerModule value="true"/>
 	<MultiplayerModule value="false"/>
 	<DependedModules>
-		<DependedModule Id="Native" DependentVersion="e1.7.0"/>
-		<DependedModule Id="SandBoxCore" DependentVersion="e1.7.0"/>
-		<DependedModule Id="Sandbox" DependentVersion="e1.7.0"/>
-		<DependedModule Id="StoryMode" DependentVersion="e1.7.0"/>
+		<DependedModule Id="Native"/>
+		<DependedModule Id="SandBoxCore"/>
+		<DependedModule Id="Sandbox"/>
+		<DependedModule Id="StoryMode"/>
 	</DependedModules>
 	<SubModules>
 		<SubModule>

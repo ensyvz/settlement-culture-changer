@@ -86,10 +86,7 @@ namespace SettlementCultureChanger
             if (settlement.Culture != (settlement.OwnerClan.Kingdom?.Culture ?? settlement.OwnerClan.Culture))
             {
                 settlement.Culture = settlement.OwnerClan.Kingdom?.Culture ?? settlement.OwnerClan.Culture;
-                foreach (Hero notable in settlement.Notables)
-                {
-                    notable.Culture = settlement.OwnerClan.Kingdom?.Culture ?? settlement.OwnerClan.Culture;
-                }
+                ChangeNotableCulture(settlement);
                 if(deleteTroops)
                     DeleteNotableTroops(settlement);
                 foreach (Village boundVillage in settlement.BoundVillages)
@@ -98,6 +95,16 @@ namespace SettlementCultureChanger
                         ChangeCulture(boundVillage.Settlement,true);
                     else
                         ChangeCulture(boundVillage.Settlement,false);
+                }
+            }
+        }
+        public static void ChangeNotableCulture(Settlement settlement)
+        {
+            if (!SubModule.lightMode)
+            {
+                foreach (Hero notable in settlement.Notables)
+                {
+                    notable.Culture = settlement.OwnerClan.Kingdom?.Culture ?? settlement.OwnerClan.Culture;
                 }
             }
         }
