@@ -18,7 +18,7 @@ namespace SettlementCultureChanger
             if (SubModule.isGradual)
                 CampaignEvents.WeeklyTickEvent.AddNonSerializedListener((object)this, new Action(this.OnSettlementWeeklyTick));
            
-            CampaignEvents.OnSiegeAftermathAppliedEvent.AddNonSerializedListener((object)this,new Action<MobileParty, Settlement, SiegeAftermathCampaignBehavior.SiegeAftermath, Clan, Dictionary<MobileParty, float>>(this.OnSiegeAftermathApplied));
+            CampaignEvents.OnSiegeAftermathAppliedEvent.AddNonSerializedListener((object)this,new Action<MobileParty, Settlement, SiegeAftermathAction.SiegeAftermath, Clan, Dictionary<MobileParty, float>>(this.OnSiegeAftermathApplied));
             CampaignEvents.OnSettlementOwnerChangedEvent.AddNonSerializedListener((object)this, new Action<Settlement, bool, Hero, Hero, Hero, ChangeOwnerOfSettlementAction.ChangeOwnerOfSettlementDetail>(this.OnSettlementOwnerChanged));
             CampaignEvents.ClanChangedKingdom.AddNonSerializedListener((object)this, new Action<Clan, Kingdom, Kingdom, ChangeKingdomAction.ChangeKingdomActionDetail, bool>(this.OnClanChangedKingdom));
             CampaignEvents.OnGameLoadedEvent.AddNonSerializedListener((object)this, new Action<CampaignGameStarter>(this.OnGameLoaded));
@@ -28,11 +28,17 @@ namespace SettlementCultureChanger
         private void OnGameLoaded(CampaignGameStarter obj)
         {
             Dictionary<Settlement, CultureObject> initialCultureList = new Dictionary<Settlement, CultureObject>();
-            foreach (Settlement settlement in Campaign.Current.Settlements.Where(s => s.IsTown || s.IsCastle || s.IsVillage))
+            foreach (Settlement settlement in Campaign.Current.Settlements.Where(s => s.IsTown || s.IsCastle))
             {
                 AddToInitialCultureList(settlement, settlement.Culture);
                 if (!SubModule.isGradual)
                     ChangeCulture(settlement,true);
+            }
+            foreach (Settlement settlement in Campaign.Current.Settlements.Where(s => s.IsVillage))
+            {
+                AddToInitialCultureList(settlement, settlement.Culture);
+                if (!SubModule.isGradual)
+                    ChangeCulture(settlement, true);
             }
             if (SubModule.isGradual)
             {
@@ -51,7 +57,7 @@ namespace SettlementCultureChanger
             }
         }
 
-        private void OnSiegeAftermathApplied(MobileParty arg1, Settlement settlement, SiegeAftermathCampaignBehavior.SiegeAftermath arg3, Clan arg4, Dictionary<MobileParty, float> arg5)
+        private void OnSiegeAftermathApplied(MobileParty arg1, Settlement settlement, SiegeAftermathAction.SiegeAftermath arg3, Clan arg4, Dictionary<MobileParty, float> arg5)
         {
             if (SubModule.isGradual)
                 AddSettlementCounter(settlement);
